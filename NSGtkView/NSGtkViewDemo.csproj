@@ -75,9 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="NSGtkView2.designer.cs">
-      <DependentUpon>NSGtkView.cs</DependentUpon>
-    </Compile>
     <Compile Include="NSGtkView.cs" />
     <Compile Include="GtkEmbedContainer.cs" />
   </ItemGroup>
