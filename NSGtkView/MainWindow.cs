@@ -5,7 +5,7 @@ using System.Linq;
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 
-namespace NSGtkView
+namespace NSGtkViewDemo
 {
 	public partial class MainWindow : MonoMac.AppKit.NSWindow
 	{

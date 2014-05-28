@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGtkView", "NSGtkView\NSGtkView.csproj", "{EBF40483-BC9B-4641-A51C-50EA364A38F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGtkViewDemo", "NSGtkView\NSGtkViewDemo.csproj", "{EBF40483-BC9B-4641-A51C-50EA364A38F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +18,6 @@ Global
 		{EBF40483-BC9B-4641-A51C-50EA364A38F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = NSGtkView\NSGtkView.csproj
+		StartupItem = NSGtkView\NSGtkViewDemo.csproj
 	EndGlobalSection
 EndGlobal

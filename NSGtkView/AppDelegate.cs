@@ -4,7 +4,7 @@ using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
 
-namespace NSGtkView
+namespace NSGtkViewDemo
 {
 	public partial class AppDelegate : NSApplicationDelegate
 	{
