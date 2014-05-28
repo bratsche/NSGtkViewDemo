@@ -12,7 +12,7 @@ namespace NSGtkViewDemo
 		const string LibGdk = "libgdk-quartz-2.0.dylib";
 		const string LibGtk = "libgtk-quartz-2.0.dylib";
 
-		[System.Runtime.InteropServices.DllImport (LibGdk)]
+		[System.Runtime.InteropServices.DllImport (LibGtk)]
 		extern static IntPtr gtk_ns_view_new (IntPtr nsview);
 
 		[System.Runtime.InteropServices.DllImport (LibGtk)]
@@ -39,6 +39,7 @@ namespace NSGtkViewDemo
 			NSWindow nswindow = null;
 			NSSplitView split;
 
+			NSApplication.Init ();
 			Application.Init ();
 
 			var window = new Window (WindowType.Toplevel);
@@ -47,15 +48,23 @@ namespace NSGtkViewDemo
 			nswindow = GetWindow (window);
 
 			split = new NSSplitView (nswindow.Frame);
+			//NSBox nsbox = new NSBox (nswindow.Frame);
 			var nsbutton = new NSButton (split.Frame);
 			nsbutton.Title = "NSButton";
 			split.AddSubview (nsbutton);
 			Widget gtknsview = NSViewToGtkWidget (split);
 
-			var embed = new GtkEmbedContainer { GtkView = gtknsview };
+			gtknsview.Show ();
+
+			var embed = new GtkEmbedContainer ();
+			embed.GtkView = gtknsview;
+			embed.ShowAll ();
 			window.Add (embed);
 
-			window.Show ();
+			var gtksubview = new NSGtkView (split.Frame);
+			gtksubview.GtkParent = embed;
+			gtksubview.Widget = new Button ("GtkButton");
+			split.AddSubview (gtksubview);
 
 			window.ShowAll (); 
 			Application.Run ();

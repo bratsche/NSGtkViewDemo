@@ -6,11 +6,20 @@ namespace NSGtkViewDemo
 {
 	public class GtkEmbedContainer : Container
 	{
-		public Widget GtkView { get; set; }
+		Widget gtknsview = null;
+
+		public Widget GtkView {
+			get { return gtknsview; }
+			set {
+				gtknsview = value;
+				gtknsview.Parent = this;
+			}
+		}
 		List<Widget> children = new List<Widget> ();
 
 		public GtkEmbedContainer ()
 		{
+			WidgetFlags |= Gtk.WidgetFlags.NoWindow;
 			// Mono.TextEditor.GtkWorkarounds.FixContainerLeak (this);
 		}
 
@@ -19,15 +28,14 @@ namespace NSGtkViewDemo
 			return Widget.GType;
 		}
 
-		public void AddChild (Widget widget)
+		protected override void OnAdded (Widget widget)
 		{
 			widget.Parent = this;
 			children.Add (widget);
 		}
 
-		public void RemoveChild (Widget widget)
+		protected override void OnRemoved (Widget widget)
 		{
-			widget.Unparent ();
 			children.Remove (widget);
 		}
 

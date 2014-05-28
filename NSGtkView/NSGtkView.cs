@@ -5,7 +5,7 @@ using System.Linq;
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 
-namespace NSGtkView
+namespace NSGtkViewDemo
 {
 	public partial class NSGtkView : MonoMac.AppKit.NSView
 	{
@@ -15,6 +15,12 @@ namespace NSGtkView
 		public NSGtkView (IntPtr handle) : base (handle)
 		{
 			Initialize ();
+		}
+
+		public NSGtkView (RectangleF frame)
+		{
+			Initialize ();
+			Frame = frame;
 		}
 		
 		// Called when created directly from a XIB file
@@ -31,31 +37,27 @@ namespace NSGtkView
 
 		#endregion
 
-		private Gtk.Widget widget;
-		private Gtk.Container parent;
+		private Gtk.Widget widget = null;
+		private GtkEmbedContainer parent = null;
 
-		public Gtk.Container Parent {
+		public GtkEmbedContainer GtkParent {
 			get { return parent; }
 			set {
 				parent = value;
 				if (widget != null) {
 					parent.Add (widget);
+					widget.Show ();
 				}
 			}
 		}
 
-		Gtk.Widget Widget {
+		public Gtk.Widget Widget {
 			get { return widget; }
 			set {
 				widget = value;
-				if (Parent != null) {
-					Parent.Add (widget);
+				if (parent != null) {
+					parent.Add (widget);
 				}
-
-				widget.Realized += (sender, e) => {
-					UpdateAllocation ();
-					widget.QueueDraw ();
-				};
 			}
 		}
 
