@@ -74,26 +74,12 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="MainWindowController.cs" />
-    <Compile Include="MainWindow.designer.cs">
-      <DependentUpon>MainWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Main.cs" />
-    <Compile Include="AppDelegate.cs" />
-    <Compile Include="AppDelegate.designer.cs">
-      <DependentUpon>AppDelegate.cs</DependentUpon>
-    </Compile>
     <Compile Include="NSGtkView2.designer.cs">
       <DependentUpon>NSGtkView.cs</DependentUpon>
     </Compile>
     <Compile Include="NSGtkView.cs" />
     <Compile Include="GtkEmbedContainer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterfaceDefinition Include="MainWindow.xib" />
-    <InterfaceDefinition Include="MainMenu.xib" />
-    <InterfaceDefinition Include="NSGtkView.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
