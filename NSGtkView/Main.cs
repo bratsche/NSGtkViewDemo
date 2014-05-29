@@ -15,8 +15,20 @@ namespace NSGtkViewDemo
 		[System.Runtime.InteropServices.DllImport (LibGtk)]
 		extern static IntPtr gtk_ns_view_new (IntPtr nsview);
 
-		[System.Runtime.InteropServices.DllImport (LibGtk)]
+		[System.Runtime.InteropServices.DllImport (LibGdk)]
 		extern static IntPtr gdk_quartz_window_get_nswindow (IntPtr gdkwindow);
+
+		[System.Runtime.InteropServices.DllImport (LibGdk)]
+		extern static IntPtr gdk_quartz_window_get_nsview (IntPtr gdkwindow);
+
+		public static NSView GetView (Gtk.Window Window)
+		{
+			var ptr = gdk_quartz_window_get_nsview (Window.GdkWindow.Handle);
+			if (ptr == IntPtr.Zero)
+				return null;
+
+			return MonoMac.ObjCRuntime.Runtime.GetNSObject (ptr) as NSView;
+		}
 
 		public static NSWindow GetWindow (Gtk.Window window)
 		{
@@ -63,7 +75,10 @@ namespace NSGtkViewDemo
 
 			var gtksubview = new NSGtkView (split.Frame);
 			gtksubview.GtkParent = embed;
-			gtksubview.Widget = new Button ("GtkButton");
+			gtksubview.Toplevel = GetView (window);
+			var gtkbutton = new Button ("GtkButton");
+			gtkbutton.Clicked += (sender, e) => { Console.WriteLine ("CLICK!"); };
+			gtksubview.Widget = gtkbutton;
 			split.AddSubview (gtksubview);
 
 			window.ShowAll (); 
