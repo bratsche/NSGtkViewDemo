@@ -71,7 +71,12 @@ namespace NSGtkViewDemo
 			var embed = new GtkEmbedContainer ();
 			embed.GtkView = gtknsview;
 			embed.ShowAll ();
-			window.Add (embed);
+
+			GLib.Timeout.Add (10, delegate {
+				window.Add (embed);
+				return false;
+			}); 
+			//window.Add (embed);
 
 			var gtksubview = new NSGtkView (split.Frame);
 			gtksubview.GtkParent = embed;

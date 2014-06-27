@@ -19,8 +19,24 @@ namespace NSGtkViewDemo
 
 		public GtkEmbedContainer ()
 		{
-			WidgetFlags |= Gtk.WidgetFlags.NoWindow;
+			//WidgetFlags |= Gtk.WidgetFlags.NoWindow;
 			// Mono.TextEditor.GtkWorkarounds.FixContainerLeak (this);
+		}
+
+		protected override void OnRealized ()
+		{
+			WidgetFlags |= WidgetFlags.Realized;
+
+			var attributes = new Gdk.WindowAttr {
+				WindowType = Gdk.WindowType.Child,
+				Wclass = Gdk.WindowClass.InputOutput,
+				EventMask = (int)Gdk.EventMask.AllEventsMask,
+			};
+
+			GdkWindow = new Gdk.Window (GtkView.GdkWindow, attributes, 0);
+			GdkWindow.UserData = Handle;
+			GdkWindow.Background = Style.Background (State);
+			Style.Attach (GdkWindow);
 		}
 
 		public override GLib.GType ChildType ()

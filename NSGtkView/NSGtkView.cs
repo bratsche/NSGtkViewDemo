@@ -65,7 +65,7 @@ namespace NSGtkViewDemo
 				parent = value;
 				if (widget != null) {
 					parent.Add (widget);
-					widget.Show ();
+//					widget.Show ();
 				}
 			}
 		}
@@ -98,51 +98,53 @@ namespace NSGtkViewDemo
 			UpdateAllocation ();
 		}
 
+		/*
 		public override void MouseMoved (NSEvent nsevt)
 		{
 			Console.WriteLine ("MoveMoved");
 		}
+		*/
 
-		public override void MouseDown (NSEvent nsevt)
-		{
-			Console.WriteLine ("MouseDown");
+//		public override void MouseDown (NSEvent nsevt)
+//		{
+//			Console.WriteLine ("MouseDown");
+//
+//			/*
+//			var evtStruct = new NativeEventButtonStruct {
+//				type = Gdk.EventType.ButtonPress,
+//				send_event = 1,
+//				window = Widget.GdkWindow.Handle,
+//				x = nsevt.AbsoluteX,
+//				y = nsevt.AbsoluteY,
+//				button = (uint)nsevt.ButtonNumber,
+//				device = IntPtr.Zero
+//			};
+//
+//			IntPtr ptr = GLib.Marshaller.StructureToPtrAlloc (evtStruct);
+//			try {
+//				Gdk.EventButton evt = new Gdk.EventButton (ptr);
+//				Gdk.EventHelper.Put (evt);
+//			} finally {
+//				Marshal.FreeHGlobal (ptr);
+//			}
+//			*/
+//		}
 
-			/*
-			var evtStruct = new NativeEventButtonStruct {
-				type = Gdk.EventType.ButtonPress,
-				send_event = 1,
-				window = Widget.GdkWindow.Handle,
-				x = nsevt.AbsoluteX,
-				y = nsevt.AbsoluteY,
-				button = (uint)nsevt.ButtonNumber,
-				device = IntPtr.Zero
-			};
-
-			IntPtr ptr = GLib.Marshaller.StructureToPtrAlloc (evtStruct);
-			try {
-				Gdk.EventButton evt = new Gdk.EventButton (ptr);
-				Gdk.EventHelper.Put (evt);
-			} finally {
-				Marshal.FreeHGlobal (ptr);
-			}
-			*/
-		}
-
-		public override void MouseUp (NSEvent nsevt)
-		{
-			Console.WriteLine ("MouseUp");
-		}
+//		public override void MouseUp (NSEvent nsevt)
+//		{
+//			Console.WriteLine ("MouseUp");
+//		}
 
 		public override bool AcceptsFirstResponder ()
 		{
 			//Console.WriteLine ("AcceptsFirstResponder");
-			return true;
+			return false;
 		}
 
 		public override bool BecomeFirstResponder ()
 		{
 			//Console.WriteLine ("BecomeFirstResponder");
-			return true;
+			return false;
 		}
 
 		public override NSView HitTest (PointF pt)
