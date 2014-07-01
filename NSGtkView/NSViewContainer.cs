@@ -56,11 +56,22 @@ namespace NSGtkViewDemo
 		{
 			embedView = new GtkEmbed (this, widget);
 
-			widget.FocusInEvent += (o, args) => {
-				NSView.Window.MakeFirstResponder (embedView);
-			};
+			WatchForFocus (widget);
 
 			return embedView;
+		}
+
+		private void WatchForFocus (Widget widget)
+		{
+			widget.FocusInEvent += (o, args) => NSView.Window.MakeFirstResponder (embedView);
+
+			if (widget is Container) {
+				Container c = (Container)widget;
+
+				foreach (Widget w in c.Children) {
+					WatchForFocus (w);
+				}
+			}
 		}
 
 		/// <summary>
