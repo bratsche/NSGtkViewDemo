@@ -4,31 +4,19 @@ using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
 using Gtk;
+using System.Collections.Generic;
 
 namespace NSGtkViewDemo
 {
 	class MainClass
 	{
-		const string LibGdk = "libgdk-quartz-2.0.dylib";
 		const string LibGtk = "libgtk-quartz-2.0.dylib";
 
 		[System.Runtime.InteropServices.DllImport (LibGtk)]
-		extern static IntPtr gtk_ns_view_new (IntPtr nsview);
-
-		[System.Runtime.InteropServices.DllImport (LibGdk)]
 		extern static IntPtr gdk_quartz_window_get_nswindow (IntPtr gdkwindow);
 
-		[System.Runtime.InteropServices.DllImport (LibGdk)]
+		[System.Runtime.InteropServices.DllImport (LibGtk)]
 		extern static IntPtr gdk_quartz_window_get_nsview (IntPtr gdkwindow);
-
-		public static NSView GetView (Gtk.Window Window)
-		{
-			var ptr = gdk_quartz_window_get_nsview (Window.GdkWindow.Handle);
-			if (ptr == IntPtr.Zero)
-				return null;
-
-			return MonoMac.ObjCRuntime.Runtime.GetNSObject (ptr) as NSView;
-		}
 
 		public static NSWindow GetWindow (Gtk.Window window)
 		{
@@ -38,55 +26,47 @@ namespace NSGtkViewDemo
 			return MonoMac.ObjCRuntime.Runtime.GetNSObject (ptr) as NSWindow;
 		}
 
-		static Gtk.Widget NSViewToGtkWidget (object view)
+		public static NSView GetView (Gdk.Window window)
 		{
-			var prop = view.GetType ().GetProperty ("Handle");
-			var handle = prop.GetValue (view, null);
-
-			return new Gtk.Widget (gtk_ns_view_new ((IntPtr)handle));
+			var ptr = gdk_quartz_window_get_nsview (window.Handle);
+			if (ptr == IntPtr.Zero)
+				return null;
+			return MonoMac.ObjCRuntime.Runtime.GetNSObject (ptr) as NSView;
 		}
 
 		static void Main (string[] args)
 		{
-			NSWindow nswindow = null;
-			NSSplitView split;
-
 			NSApplication.Init ();
 			Application.Init ();
 
+			// Create the main window
 			var window = new Window (WindowType.Toplevel);
-			window.Show ();
+//			window.DefaultWidth = 500;
+//			window.DefaultHeight = 500;
 
-			nswindow = GetWindow (window);
+			// Add the root container
+			var viewContainer = new NSViewContainer ();
+			window.Add (viewContainer);
+			window.ShowAll ();
 
-			split = new NSSplitView (nswindow.Frame);
-			//NSBox nsbox = new NSBox (nswindow.Frame);
-			var nsbutton = new NSButton (split.Frame);
-			nsbutton.Title = "NSButton";
-			split.AddSubview (nsbutton);
-			Widget gtknsview = NSViewToGtkWidget (split);
+			// Add a split view to the container
+			NSSplitView sp = new NSSplitView (new RectangleF (0, 0, window.Allocation.Width, window.Allocation.Height));
 
-			gtknsview.Show ();
+			// The first element of the split view is a mac button
+			sp.AddSubview (new NSButton (new RectangleF (0, 0, 60, 60)) { Title = "Mac Button"} );
+			viewContainer.AddNSChild (sp);
 
-			var embed = new GtkEmbedContainer ();
-			embed.GtkView = gtknsview;
-			embed.ShowAll ();
+			//var btn = new Button ("Gtk Button");
+			var btn = new Entry ();
+			//btn.Changed += (object sender, EventArgs e) => Console.WriteLine("Changed");
+			btn.SizeRequest ();
+			btn.Show ();
 
-			GLib.Timeout.Add (10, delegate {
-				window.Add (embed);
-				return false;
-			}); 
-			//window.Add (embed);
+			// Create an embed view for the gtk button, and add it to the split
+			var gtkView = viewContainer.CreateEmbedView (btn);
+			sp.AddSubview (gtkView);
+			gtkView.SetFrameSize (new SizeF (50, 50));
 
-			var gtksubview = new NSGtkView (split.Frame);
-			gtksubview.GtkParent = embed;
-			gtksubview.Toplevel = GetView (window);
-			var gtkbutton = new Button ("GtkButton");
-			gtkbutton.Clicked += (sender, e) => { Console.WriteLine ("CLICK!"); };
-			gtksubview.Widget = gtkbutton;
-			split.AddSubview (gtksubview);
-
-			window.ShowAll (); 
 			Application.Run ();
 		}
 	}
