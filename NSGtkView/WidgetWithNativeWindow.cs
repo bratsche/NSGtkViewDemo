@@ -15,10 +15,7 @@ namespace NSGtkViewDemo
 
 		protected override void OnRealized ()
 		{
-			Console.WriteLine ("Realizing");
 			WidgetFlags |= WidgetFlags.Realized;
-
-			Console.WriteLine ("WidgetWithNativeWindow: {0}", Allocation);
 
 			Gdk.WindowAttr attributes = new Gdk.WindowAttr ();
 			attributes.X = Allocation.X;

@@ -31,6 +31,12 @@ namespace NSGtkViewDemo
 			}
 		}
 
+		[Export ("isGtkView")]
+		public bool isGtkView ()
+		{
+			return true;
+		}
+
 		void UpdateAllocation ()
 		{
 			if (container.GdkWindow == null || cw.GdkWindow == null)
@@ -46,8 +52,6 @@ namespace NSGtkViewDemo
 				Width = (int)rect.Width,
 				Height = (int)rect.Height
 			};
-
-			Console.WriteLine ("GtkEmbed.UpdateAllocation(): {0}", allocation);
 
 			cw.SizeAllocate (allocation);
 		}

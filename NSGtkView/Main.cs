@@ -54,16 +54,19 @@ namespace NSGtkViewDemo
 
 			// The first element of the split view is a mac button
 			sp.AddSubview (new NSButton (new RectangleF (0, 0, 60, 60)) { Title = "Mac Button"} );
+			sp.AddSubview (new NSTextField (new RectangleF (0, 0, 60, 60)));
 			viewContainer.AddNSChild (sp);
 
-			//var btn = new Button ("Gtk Button");
-			var btn = new Entry ();
-			//btn.Changed += (object sender, EventArgs e) => Console.WriteLine("Changed");
-			btn.SizeRequest ();
-			btn.Show ();
+			var btn = new Button ("Gtk Button");
+			var entry = new Entry ();
+
+			var vbox = new VBox ();
+			vbox.PackStart (btn);
+			vbox.PackStart (entry);
+			vbox.ShowAll ();
 
 			// Create an embed view for the gtk button, and add it to the split
-			var gtkView = viewContainer.CreateEmbedView (btn);
+			var gtkView = viewContainer.CreateEmbedView (vbox);
 			sp.AddSubview (gtkView);
 			gtkView.SetFrameSize (new SizeF (50, 50));
 

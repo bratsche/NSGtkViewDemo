@@ -9,8 +9,6 @@ namespace NSGtkViewDemo
 {
 	public class NSViewContainer : Bin
 	{
-		//List<Widget> children = new List<Widget> ();
-
 		public NSViewContainer ()
 		{
 			WidgetFlags |= Gtk.WidgetFlags.NoWindow;
@@ -29,31 +27,13 @@ namespace NSGtkViewDemo
 			NSView.AddSubview (nsview);
 		}
 
-		/*
-		protected override void OnAdded (Widget widget)
-		{
-			widget.Parent = this;
-			children.Add (widget);
-		}
-
-		protected override void OnRemoved (Widget widget)
-		{
-			children.Remove (widget);
-		}
-
-		protected override void ForAll (bool include_internals, Callback cb)
-		{
-			foreach (Widget w in children)
-				cb (w);
-		}
-		*/
-
 		/// <summary>
 		/// Creates an NSView that embeds the provided GTK widget.
 		/// This view can be added to any NSView inside this container
 		/// </summary>
 		public NSView CreateEmbedView (Gtk.Widget widget)
 		{
+			widget.SizeRequest ();
 			embedView = new GtkEmbed (this, widget);
 
 			WatchForFocus (widget);
@@ -63,7 +43,9 @@ namespace NSGtkViewDemo
 
 		private void WatchForFocus (Widget widget)
 		{
-			widget.FocusInEvent += (o, args) => NSView.Window.MakeFirstResponder (embedView);
+			widget.FocusInEvent += (o, args) => {
+				NSView.Window.MakeFirstResponder (embedView);
+			};
 
 			if (widget is Container) {
 				Container c = (Container)widget;
